@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fatema Tuz Zannat — Graphic Designer</title>
+<meta name="description" content="Graphic design portfolio — flyers, posters, banners, branding & social media design.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #0A0A0B;
+    --bg-card: #18181A;
+    --bg-card-hover: #1F1F22;
+    --paper: #F5F3EE;
+    --accent: #E8483C;
+    --muted: #8A8A8F;
+    --hairline: rgba(245,243,238,0.10);
+    --grain-opacity: 0.05;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+    cursor:default;
+  }
+
+  ::selection{ background:var(--accent); color:var(--paper); }
+
+  h1,h2,h3{ font-family:'Anton', sans-serif; font-weight:400; text-transform:uppercase; letter-spacing:0.01em; }
+
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  a{ color:inherit; text-decoration:none; }
+
+  img{ display:block; max-width:100%; }
+
+  /* ---------- grain + spotlight ---------- */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:300; opacity:var(--grain-opacity); mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .spotlight{
+    position:fixed; inset:0; pointer-events:none; z-index:1;
+    background:
+      radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(232,72,60,0.16), transparent 55%),
+      radial-gradient(900px circle at var(--mx,50%) var(--my,50%), rgba(232,72,60,0.05), transparent 65%);
+  }
+
+  .spotlight-ring{
+    position:fixed; top:0; left:0; width:28px; height:28px; border-radius:50%;
+    border:1px solid rgba(232,72,60,0.5); pointer-events:none; z-index:250;
+    transform:translate(calc(var(--ringx, -100px) - 50%), calc(var(--ringy, -100px) - 50%));
+    transition:transform 0.18s cubic-bezier(.19,1,.22,1), width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+    opacity:0; mix-blend-mode:difference;
+  }
+  .spotlight-ring.active{ opacity:1; }
+  .spotlight-ring.hovering{ width:56px; height:56px; border-color:var(--accent); }
+
+  @media (hover:none){ .spotlight-ring{ display:none; } }
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:28px 5vw;
+    mix-blend-mode:difference;
+  }
+
+  .nav-mark{ font-family:'Anton', sans-serif; font-size:1.1rem; letter-spacing:0.04em; }
+
+  .nav-links{ display:flex; gap:36px; }
+
+  .nav-links a{
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase;
+    opacity:0.75; transition:opacity 0.25s ease;
+    position:relative;
+  }
+  .nav-links a:hover{ opacity:1; }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:currentColor;
+    transition:width 0.3s ease;
+  }
+  .nav-links a:hover::after{ width:100%; }
+
+  .nav-toggle{
+    display:none; width:38px; height:38px; border:none; background:transparent; color:var(--paper);
+    cursor:pointer; align-items:center; justify-content:center; position:relative; z-index:210;
+  }
+  .nav-toggle svg{ width:22px; height:22px; }
+
+  .mobile-nav{
+    position:fixed; inset:0; z-index:199; background:rgba(8,8,9,0.98); backdrop-filter:blur(10px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:28px;
+    opacity:0; pointer-events:none; transition:opacity 0.35s ease;
+  }
+  .mobile-nav.open{ opacity:1; pointer-events:auto; }
+  .mobile-nav a{
+    font-family:'Anton', sans-serif; font-size:1.8rem; text-transform:uppercase; letter-spacing:0.02em;
+    opacity:0; transform:translateY(12px); transition:opacity 0.4s ease, transform 0.4s ease;
+  }
+  .mobile-nav.open a{ opacity:1; transform:translateY(0); }
+  .mobile-nav.open a:nth-child(1){ transition-delay:0.05s; }
+  .mobile-nav.open a:nth-child(2){ transition-delay:0.1s; }
+  .mobile-nav.open a:nth-child(3){ transition-delay:0.15s; }
+  .mobile-nav.open a:nth-child(4){ transition-delay:0.2s; }
+  .mobile-nav.open a:nth-child(5){ transition-delay:0.25s; }
+  .mobile-nav.open a:nth-child(6){ transition-delay:0.3s; }
+  .mobile-nav.open a:nth-child(7){ transition-delay:0.35s; }
+
+  @media (max-width: 760px){
+    .nav-links{ display:none; }
+    .nav-toggle{ display:flex; }
+  }
+  @media (min-width: 761px){
+    .mobile-nav{ display:none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100svh; display:grid; grid-template-columns:1.1fr 0.9fr; align-items:center; gap:40px;
+    padding:120px 5vw 0; position:relative; z-index:2;
+  }
+
+  .hero-eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:0.78rem; letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:24px; display:flex; align-items:center; gap:12px;
+    opacity:0; animation:fadeUp 0.8s ease 0.2s forwards;
+  }
+  .hero-eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulse 2s ease infinite; }
+
+  .hero h1{
+    font-size:clamp(2.8rem, 7.5vw, 6.4rem); line-height:0.88; letter-spacing:-0.01em;
+    opacity:0; animation:fadeUp 0.9s ease 0.35s forwards;
+  }
+  .hero h1 .line2{ color:transparent; -webkit-text-stroke:1.5px var(--paper); display:block; }
+
+  .hero-sub{
+    margin-top:32px; max-width:480px; font-size:1.05rem; line-height:1.65; color:var(--muted);
+    opacity:0; animation:fadeUp 0.9s ease 0.55s forwards;
+  }
+
+  .scroll-cue{
+    margin-top:64px; display:flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;
+    opacity:0; animation:fadeUp 0.9s ease 0.9s forwards;
+  }
+  .scroll-cue .bar{ width:1px; height:36px; background:var(--muted); position:relative; overflow:hidden; }
+  .scroll-cue .bar::after{
+    content:''; position:absolute; top:-100%; left:0; width:100%; height:100%; background:var(--accent);
+    animation:scrollbar 1.8s ease-in-out infinite;
+  }
+
+  /* featured work visual */
+  .hero-visual{
+    position:relative; aspect-ratio:4/5; max-width:380px; width:100%; justify-self:center;
+    opacity:0; animation:fadeUp 1.1s cubic-bezier(.19,1,.22,1) 0.5s forwards;
+  }
+  .hero-frame{
+    position:absolute; inset:0; border-radius:8px; overflow:hidden; border:1px solid var(--hairline);
+    box-shadow:0 50px 100px -30px rgba(0,0,0,0.85);
+    transform:rotate(3deg); transition:transform 0.6s cubic-bezier(.19,1,.22,1);
+  }
+  .hero-frame:hover{ transform:rotate(0deg) translateY(-6px); }
+  .hero-frame img{ width:100%; height:100%; object-fit:cover; }
+  .hero-frame-tag{
+    position:absolute; bottom:0; left:0; right:0; padding:16px 20px;
+    background:linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--paper);
+  }
+  .hero-frame-back{
+    z-index:-1; background:var(--bg-card); border:1px solid var(--hairline);
+    transform:rotate(-5deg) translateY(10px); opacity:0.5;
+  }
+
+  @media (max-width: 900px){
+    .hero{ grid-template-columns:1fr; padding-top:140px; text-align:left; gap:56px; }
+    .hero-visual{ max-width:280px; order:-1; margin:0 auto; }
+  }
+
+  @keyframes scrollbar{
+    0%{ top:-100%; } 50%{ top:0%; } 100%{ top:100%; }
+  }
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(24px);} to{ opacity:1; transform:translateY(0);} }
+  @keyframes pulse{ 0%,100%{ opacity:1;} 50%{ opacity:0.3;} }
+
+  /* ---------- section shell ---------- */
+  .section{
+    position:relative; z-index:2; padding:140px 5vw 60px;
+    border-top:1px solid var(--hairline);
+    overflow:hidden;
+  }
+
+  .section-num{
+    position:absolute; top:60px; right:4vw; z-index:-1;
+    font-family:'Anton', sans-serif; font-size:clamp(8rem, 22vw, 18rem); line-height:1;
+    color:transparent; -webkit-text-stroke:1px var(--hairline);
+    user-select:none; pointer-events:none;
+  }
+  .section.alt .section-num{ right:auto; left:4vw; }
+
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:56px; flex-wrap:wrap;
+    position:relative;
+  }
+
+  .section-label{
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--accent); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:14px;
+  }
+
+  .section-title{ font-size:clamp(2.2rem, 5vw, 4rem); line-height:0.95; }
+
+  .section-count{
+    font-family:'JetBrains Mono', monospace; font-size:0.78rem; color:var(--muted); text-align:right; white-space:nowrap;
+  }
+
+  .reveal{ opacity:0; transform:translateY(40px); transition:opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- slideshow / stack ---------- */
+  .stack-wrap{
+    display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;
+  }
+  @media (max-width: 900px){ .stack-wrap{ grid-template-columns:1fr; gap:40px; } }
+
+  .stack{
+    position:relative; aspect-ratio:4/5; width:100%; max-width:420px; margin:0 auto;
+  }
+
+  .stack-card{
+    position:absolute; inset:0; border-radius:6px; overflow:hidden;
+    background:var(--bg-card); border:1px solid var(--hairline);
+    transition:transform 1.3s cubic-bezier(.45,0,.15,1), opacity 1.1s cubic-bezier(.45,0,.15,1), filter 1.3s cubic-bezier(.45,0,.15,1);
+    will-change:transform, opacity;
+    cursor:pointer;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.7);
+  }
+  .stack-card img{ width:100%; height:100%; object-fit:cover; }
+  .stack-card .cap{
+    position:absolute; bottom:0; left:0; right:0; padding:18px 20px;
+    background:linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+    font-family:'JetBrains Mono', monospace; font-size:0.7rem; letter-spacing:0.05em; text-transform:uppercase;
+    opacity:0; transition:opacity 0.35s ease;
+  }
+  .stack-card:hover .cap{ opacity:1; }
+  .stack-card:hover{ transform:translateY(-6px) rotate(0deg) !important; filter:brightness(1.08); }
+
+  .stack-card.behind2{ filter:brightness(0.6); }
+  .stack-card.behind3{ filter:brightness(0.4); }
+
+  .stack-info{ display:flex; flex-direction:column; gap:28px; }
+
+  .stack-info h3{ font-size:clamp(1.6rem, 3vw, 2.4rem); line-height:1; }
+
+  .stack-info p{ color:var(--muted); line-height:1.7; max-width:440px; font-size:0.98rem; }
+
+  .stack-progress{ display:flex; gap:8px; }
+  .stack-progress .seg{ height:2px; flex:1; background:var(--hairline); position:relative; overflow:hidden; max-width:60px; }
+  .stack-progress .seg .fill{ position:absolute; inset:0; background:var(--accent); transform:scaleX(0); transform-origin:left; }
+  .stack-progress .seg.done .fill{ transform:scaleX(1); transition:none; }
+  .stack-progress .seg.active .fill{ transform:scaleX(0); animation:fillSeg 1.4s linear forwards; }
+
+  @keyframes fillSeg{ from{ transform:scaleX(0);} to{ transform:scaleX(1);} }
+
+  .stack-controls{ display:flex; gap:14px; align-items:center; }
+  .stack-controls button{
+    width:42px; height:42px; border-radius:50%; border:1px solid var(--hairline); background:transparent; color:var(--paper);
+    cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.25s ease;
+  }
+  .stack-controls button:hover{ border-color:var(--accent); color:var(--accent); }
+  .stack-controls svg{ width:16px; height:16px; }
+
+  .view-all-link{
+    margin-top:8px; font-family:'JetBrains Mono', monospace; font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase;
+    display:inline-flex; align-items:center; gap:8px; color:var(--paper); width:fit-content;
+    border-bottom:1px solid var(--hairline); padding-bottom:6px; transition:border-color 0.3s ease, color 0.3s ease;
+  }
+  .view-all-link:hover{ color:var(--accent); border-color:var(--accent); }
+
+  /* alternate layout direction per odd section */
+  .section.alt .stack-wrap{ direction:rtl; }
+  .section.alt .stack-wrap > *{ direction:ltr; }
+
+  /* ---------- grid section (full gallery toggle) ---------- */
+  .full-grid{
+    display:none; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px; margin-top:48px;
+  }
+  .full-grid.open{ display:grid; }
+  .full-grid figure{
+    position:relative; aspect-ratio:4/5; border-radius:5px; overflow:hidden; cursor:pointer; background:var(--bg-card);
+    border:1px solid var(--hairline);
+  }
+  .full-grid img{ width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease; }
+  .full-grid figure:hover img{ transform:scale(1.06); }
+
+  /* ---------- about ---------- */
+  .about{
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:80px; align-items:start;
+  }
+  @media (max-width:900px){ .about{ grid-template-columns:1fr; gap:40px; } }
+
+  .about-photo{
+    aspect-ratio:3/4; border-radius:6px; overflow:hidden; border:1px solid var(--hairline);
+    position:relative;
+  }
+  .about-photo img{ width:100%; height:100%; object-fit:cover; filter:grayscale(0.4) contrast(1.05); }
+
+  .about-text p{ font-size:1.15rem; line-height:1.75; color:var(--muted); margin-bottom:24px; max-width:560px; }
+  .about-text p strong{ color:var(--paper); font-weight:600; }
+
+  .skills-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:32px; }
+  .skill-tag{
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;
+    padding:9px 16px; border:1px solid var(--hairline); border-radius:30px; color:var(--muted);
+  }
+
+  /* ---------- contact ---------- */
+  .contact{ text-align:center; padding-bottom:120px; }
+  .contact h2{ font-size:clamp(2.6rem, 9vw, 7rem); line-height:0.9; }
+  .contact h2 a{ -webkit-text-stroke:1.5px var(--paper); color:transparent; transition:color 0.4s ease, -webkit-text-stroke 0.4s ease; }
+  .contact h2 a:hover{ color:var(--accent); -webkit-text-stroke:1.5px var(--accent); }
+
+  .contact-sub{ color:var(--muted); margin:24px auto 56px; max-width:480px; font-size:1.05rem; line-height:1.6; }
+
+  .whatsapp-link{
+    display:inline-flex; align-items:center; gap:10px; justify-content:center;
+    font-family:'JetBrains Mono', monospace; font-size:0.78rem; letter-spacing:0.05em;
+    color:var(--muted); border:1px solid var(--hairline); border-radius:30px; padding:12px 22px;
+    transition:all 0.3s ease;
+  }
+  .whatsapp-link svg{ width:16px; height:16px; }
+  .whatsapp-link:hover{ color:var(--paper); border-color:var(--accent); }
+
+  footer{
+    text-align:center; padding:32px 5vw; font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:var(--muted);
+    letter-spacing:0.05em; border-top:1px solid var(--hairline);
+  }
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed; inset:0; z-index:500; background:rgba(8,8,9,0.97);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity 0.4s ease;
+    backdrop-filter:blur(6px);
+  }
+  .lightbox.open{ opacity:1; pointer-events:auto; }
+
+  .lightbox-inner{
+    max-width:88vw; max-height:84vh; position:relative;
+    transform:scale(0.94); transition:transform 0.4s cubic-bezier(.22,1,.36,1);
+  }
+  .lightbox.open .lightbox-inner{ transform:scale(1); }
+
+  .lightbox img{ max-width:88vw; max-height:84vh; width:auto; height:auto; border-radius:4px; box-shadow:0 40px 100px rgba(0,0,0,0.8); }
+
+  .lightbox-cap{
+    position:absolute; bottom:-44px; left:0; font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:var(--muted); letter-spacing:0.05em;
+  }
+
+  .lightbox-close{
+    position:absolute; top:32px; right:5vw; width:46px; height:46px; border-radius:50%; border:1px solid var(--hairline);
+    background:transparent; color:var(--paper); cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:all 0.25s ease;
+  }
+  .lightbox-close:hover{ border-color:var(--accent); color:var(--accent); transform:rotate(90deg); }
+  .lightbox-close svg{ width:18px; height:18px; }
+
+  .lightbox-nav{
+    position:absolute; top:50%; transform:translateY(-50%); width:52px; height:52px; border-radius:50%;
+    border:1px solid var(--hairline); background:rgba(10,10,11,0.5); color:var(--paper); cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:all 0.25s ease;
+  }
+  .lightbox-nav:hover{ border-color:var(--accent); color:var(--accent); }
+  .lightbox-nav.prev{ left:5vw; } .lightbox-nav.next{ right:5vw; }
+  .lightbox-nav svg{ width:20px; height:20px; }
+
+  @media (max-width:700px){
+    .lightbox-nav{ width:44px; height:44px; }
+    .lightbox-nav.prev{ left:8px; } .lightbox-nav.next{ right:8px; }
+    .lightbox-close{ top:18px; right:18px; width:44px; height:44px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="spotlight" id="spotlight"></div>
+<div class="spotlight-ring" id="spotlight-ring"></div>
+
+<nav>
+  <a href="#top" class="nav-mark">Fatema Tuz Zannat</a>
+  <div class="nav-links">
+    <a href="#flyers">Flyers</a>
+    <a href="#banners">Banners</a>
+    <a href="#posters">Posters</a>
+    <a href="#branding">Branding</a>
+    <a href="#social">Social</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+    <svg id="nav-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+</nav>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="#flyers">Flyers</a>
+  <a href="#banners">Banners</a>
+  <a href="#posters">Posters</a>
+  <a href="#branding">Branding</a>
+  <a href="#social">Social</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-text">
+    <div class="hero-eyebrow"><span class="dot"></span> Graphic Designer — Based in Dhaka, BD</div>
+    <h1>VISUAL<span class="line2">DESIGNER</span></h1>
+    <p class="hero-sub">I design flyers, posters, banners, and brand identities that stop the scroll and hold the wall. Turning blank space into something worth looking at twice.</p>
+    <div class="scroll-cue"><div class="bar"></div>Scroll to explore</div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-frame">
+      <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=900&q=80" alt="Featured work — Echo Tour Poster">
+      <div class="hero-frame-tag mono">Featured — Echo Tour Poster</div>
+    </div>
+    <div class="hero-frame hero-frame-back"></div>
+  </div>
+</header>
+
+<!-- FLYERS -->
+<section class="section" id="flyers">
+  <div class="section-num">01</div>
+  <div class="section-head reveal">
+    <div>
+      <div class="section-label">Print &amp; Promo</div>
+      <h2 class="section-title">Flyers</h2>
+    </div>
+    <div class="section-count mono">06 pieces<br>Event &amp; promo work</div>
+  </div>
+
+  <div class="stack-wrap reveal">
+    <div class="stack" data-stack="flyers">
+      <!-- cards injected by JS -->
+    </div>
+    <div class="stack-info">
+      <h3 id="flyers-title">—</h3>
+      <p id="flyers-desc">—</p>
+      <div class="stack-progress" id="flyers-progress"></div>
+      <div class="stack-controls">
+        <button aria-label="Previous" data-dir="-1" data-target="flyers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button aria-label="Next" data-dir="1" data-target="flyers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+        <a href="#" class="view-all-link" data-toggle-grid="flyers">View all flyers →</a>
+      </div>
+    </div>
+  </div>
+  <div class="full-grid" id="flyers-grid"></div>
+</section>
+
+<!-- BANNERS -->
+<section class="section alt" id="banners">
+  <div class="section-num">02</div>
+  <div class="section-head reveal">
+    <div>
+      <div class="section-label">Wide Format</div>
+      <h2 class="section-title">Banners</h2>
+    </div>
+    <div class="section-count mono">06 pieces<br>Outdoor &amp; web banners</div>
+  </div>
+
+  <div class="stack-wrap reveal">
+    <div class="stack-info">
+      <h3 id="banners-title">—</h3>
+      <p id="banners-desc">—</p>
+      <div class="stack-progress" id="banners-progress"></div>
+      <div class="stack-controls">
+        <button aria-label="Previous" data-dir="-1" data-target="banners"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button aria-label="Next" data-dir="1" data-target="banners"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+        <a href="#" class="view-all-link" data-toggle-grid="banners">View all banners →</a>
+      </div>
+    </div>
+    <div class="stack" data-stack="banners"></div>
+  </div>
+  <div class="full-grid" id="banners-grid"></div>
+</section>
+
+<!-- POSTERS -->
+<section class="section" id="posters">
+  <div class="section-num">03</div>
+  <div class="section-head reveal">
+    <div>
+      <div class="section-label">Large Format</div>
+      <h2 class="section-title">Posters</h2>
+    </div>
+    <div class="section-count mono">06 pieces<br>Editorial &amp; gig posters</div>
+  </div>
+
+  <div class="stack-wrap reveal">
+    <div class="stack" data-stack="posters"></div>
+    <div class="stack-info">
+      <h3 id="posters-title">—</h3>
+      <p id="posters-desc">—</p>
+      <div class="stack-progress" id="posters-progress"></div>
+      <div class="stack-controls">
+        <button aria-label="Previous" data-dir="-1" data-target="posters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button aria-label="Next" data-dir="1" data-target="posters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+        <a href="#" class="view-all-link" data-toggle-grid="posters">View all posters →</a>
+      </div>
+    </div>
+  </div>
+  <div class="full-grid" id="posters-grid"></div>
+</section>
+
+<!-- BRANDING -->
+<section class="section alt" id="branding">
+  <div class="section-num">04</div>
+  <div class="section-head reveal">
+    <div>
+      <div class="section-label">Identity Systems</div>
+      <h2 class="section-title">Logos &amp; Branding</h2>
+    </div>
+    <div class="section-count mono">06 pieces<br>Marks &amp; identity kits</div>
+  </div>
+
+  <div class="stack-wrap reveal">
+    <div class="stack-info">
+      <h3 id="branding-title">—</h3>
+      <p id="branding-desc">—</p>
+      <div class="stack-progress" id="branding-progress"></div>
+      <div class="stack-controls">
+        <button aria-label="Previous" data-dir="-1" data-target="branding"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button aria-label="Next" data-dir="1" data-target="branding"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+        <a href="#" class="view-all-link" data-toggle-grid="branding">View all branding →</a>
+      </div>
+    </div>
+    <div class="stack" data-stack="branding"></div>
+  </div>
+  <div class="full-grid" id="branding-grid"></div>
+</section>
+
+<!-- SOCIAL -->
+<section class="section" id="social">
+  <div class="section-num">05</div>
+  <div class="section-head reveal">
+    <div>
+      <div class="section-label">Digital First</div>
+      <h2 class="section-title">Social Posts</h2>
+    </div>
+    <div class="section-count mono">06 pieces<br>Campaign &amp; feed design</div>
+  </div>
+
+  <div class="stack-wrap reveal">
+    <div class="stack" data-stack="social"></div>
+    <div class="stack-info">
+      <h3 id="social-title">—</h3>
+      <p id="social-desc">—</p>
+      <div class="stack-progress" id="social-progress"></div>
+      <div class="stack-controls">
+        <button aria-label="Previous" data-dir="-1" data-target="social"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button aria-label="Next" data-dir="1" data-target="social"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+        <a href="#" class="view-all-link" data-toggle-grid="social">View all social →</a>
+      </div>
+    </div>
+  </div>
+  <div class="full-grid" id="social-grid"></div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="section-num">06</div>
+  <div class="section-head reveal">
+    <div>
+      <div class="section-label">The Designer</div>
+      <h2 class="section-title">About</h2>
+    </div>
+  </div>
+
+  <div class="about reveal">
+    <div class="about-photo">
+      <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=800&q=80" alt="Portrait of Fatema Tuz Zannat">
+    </div>
+    <div class="about-text">
+      <p><strong>I'm Fatema Tuz Zannat</strong> — a graphic designer who believes good design should be felt before it's read. For the past five years I've worked with restaurants, music venues, startups, and local brands to turn ordinary announcements into things people actually stop for.</p>
+      <p>My process starts with the wall, not the screen — what does this need to do when it's seen for two seconds in a crowded feed or a busy street? Everything after that is editing: cutting until only the necessary thing is loud.</p>
+      <p>When I'm not designing, I'm collecting old gig posters and pretending I'll learn risograph printing properly one day.</p>
+      <div class="skills-row">
+        <span class="skill-tag">Adobe Illustrator</span>
+        <span class="skill-tag">Photoshop</span>
+        <span class="skill-tag">InDesign</span>
+        <span class="skill-tag">Figma</span>
+        <span class="skill-tag">Typography</span>
+        <span class="skill-tag">Print Production</span>
+        <span class="skill-tag">Brand Identity</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact" id="contact">
+  <div class="reveal">
+    <div class="section-label" style="justify-content:center; display:flex;">07 — Let's Talk</div>
+    <h2><a href="mailto:fatematuzzannat135@gmail.com">fatematuzzannat135@<br>gmail.com</a></h2>
+    <p class="contact-sub">Got a flyer that needs to land, a poster that needs to pop, or a brand that needs a face? My inbox is open.</p>
+    <a href="https://wa.me/+8801970004497" target="_blank" rel="noopener" class="whatsapp-link">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.05 4a8.96 8.96 0 0 0-7.76 13.45L3 21l3.65-1.28a8.93 8.93 0 0 0 4.4 1.15h.01a8.96 8.96 0 0 0 8.96-8.95 8.9 8.9 0 0 0-2.42-5.6Zm-5.55 13.78h-.01a7.43 7.43 0 0 1-3.8-1.04l-.27-.16-2.83.99.95-2.76-.18-.28a7.45 7.45 0 0 1 11.6-9.2 7.4 7.4 0 0 1 2.18 5.27 7.45 7.45 0 0 1-7.64 7.18Zm4.08-5.58c-.22-.11-1.31-.65-1.52-.72-.2-.07-.35-.11-.5.11-.15.22-.57.72-.7.87-.13.15-.26.16-.48.05a6.1 6.1 0 0 1-1.8-1.11 6.7 6.7 0 0 1-1.24-1.55c-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.07-.11-.5-1.2-.68-1.65-.18-.43-.36-.37-.5-.38h-.43c-.15 0-.39.06-.59.28-.2.22-.77.75-.77 1.84s.79 2.13.9 2.28c.11.15 1.55 2.37 3.76 3.32.52.23.93.36 1.25.46.52.17 1 .14 1.38.09.42-.06 1.31-.53 1.49-1.05.18-.51.18-.95.13-1.04-.05-.1-.2-.16-.43-.27Z"/></svg>
+      <span>Or message me on WhatsApp</span>
+    </a>
+  </div>
+</section>
+
+<footer>© 2026 Fatema Tuz Zannat — Designed &amp; built with care. All work shown is placeholder for demo purposes.</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-nav prev" id="lb-prev" aria-label="Previous image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <div class="lightbox-inner">
+    <img id="lb-img" src="" alt="">
+    <div class="lightbox-cap" id="lb-cap"></div>
+  </div>
+  <button class="lightbox-nav next" id="lb-next" aria-label="Next image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+  <button class="lightbox-close" id="lb-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+</div>
+
+<script>
+/* ============ DATA ============
+   Swap these objects with your own images later.
+   "img" = direct image URL, "title"/"desc" = shown in the slideshow info panel.
+*/
+const DATA = {
+  flyers: {
+    desc: "Single-page promo pieces designed to be read in under three seconds — for shows, sales, and local events.",
+    items: [
+      { img:"https://images.unsplash.com/photo-1581368135153-a506cf265c8d?w=900&q=80", title:"Night Market Flyer", tag:"Event · A5" },
+      { img:"https://images.unsplash.com/photo-1561070791-2526d30994b5?w=900&q=80", title:"Jazz Sessions Flyer", tag:"Music · A5" },
+      { img:"https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=900&q=80", title:"Summer Sale Flyer", tag:"Retail · A5" },
+      { img:"https://images.unsplash.com/photo-1535016120720-40c646be5580?w=900&q=80", title:"Open Mic Flyer", tag:"Event · A5" },
+      { img:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=900&q=80", title:"Art Walk Flyer", tag:"Culture · A5" },
+      { img:"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&q=80", title:"Fitness Launch Flyer", tag:"Wellness · A5" }
+    ]
+  },
+  banners: {
+    desc: "Wide-format visuals built to hold attention at a glance — storefronts, web headers, and event backdrops.",
+    items: [
+      { img:"https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1100&q=80", title:"Storefront Banner", tag:"Retail · Outdoor" },
+      { img:"https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1100&q=80", title:"Festival Banner", tag:"Event · Outdoor" },
+      { img:"https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1100&q=80", title:"Product Launch Banner", tag:"Tech · Web" },
+      { img:"https://images.unsplash.com/photo-1551033406-611cf9a28f67?w=1100&q=80", title:"Sale Week Banner", tag:"Retail · Web" },
+      { img:"https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1100&q=80", title:"Conference Banner", tag:"Corporate · Outdoor" },
+      { img:"https://images.unsplash.com/photo-1542744095-291d1f67b221?w=1100&q=80", title:"Charity Drive Banner", tag:"Nonprofit · Outdoor" }
+    ]
+  },
+  posters: {
+    desc: "Large-format statement pieces — gig posters, exhibitions, and editorial work meant to be stared at.",
+    items: [
+      { img:"https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=900&q=80", title:"Echo Tour Poster", tag:"Music · 18×24″" },
+      { img:"https://images.unsplash.com/photo-1626785774573-4b799315345d?w=900&q=80", title:"Film Fest Poster", tag:"Culture · 18×24″" },
+      { img:"https://images.unsplash.com/photo-1574169208507-84376144848b?w=900&q=80", title:"Gallery Show Poster", tag:"Art · 24×36″" },
+      { img:"https://images.unsplash.com/photo-1533139502658-0198f920d8e8?w=900&q=80", title:"Vintage Series Poster", tag:"Editorial · 18×24″" },
+      { img:"https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?w=900&q=80", title:"Type Study Poster", tag:"Personal · 18×24″" },
+      { img:"https://images.unsplash.com/photo-1559070169-a3077159ee16?w=900&q=80", title:"Color Theory Poster", tag:"Personal · 18×24″" }
+    ]
+  },
+  branding: {
+    desc: "Marks, palettes, and identity systems built to give a brand a face that holds up across every surface.",
+    items: [
+      { img:"https://images.unsplash.com/photo-1634942537034-2531766767d1?w=900&q=80", title:"Foundry Coffee Identity", tag:"Cafe · Full system" },
+      { img:"https://images.unsplash.com/photo-1622434641406-a158123450f9?w=900&q=80", title:"Nordhaus Studio Mark", tag:"Studio · Logo + kit" },
+      { img:"https://images.unsplash.com/photo-1626785774625-0b1c2c4eab67?w=900&q=80", title:"Verdant Brand System", tag:"Wellness · Full system" },
+      { img:"https://images.unsplash.com/photo-1616469829581-73993eb86b02?w=900&q=80", title:"Lumen Agency Logo", tag:"Agency · Logo + kit" },
+      { img:"https://images.unsplash.com/photo-1620288650481-bb97a8b9d9bb?w=900&q=80", title:"Atlas Goods Identity", tag:"Retail · Full system" },
+      { img:"https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=900&q=80", title:"Pulse Fitness Mark", tag:"Fitness · Logo + kit" }
+    ]
+  },
+  social: {
+    desc: "Feed-ready visuals designed for the scroll — campaign sets, carousels, and story templates.",
+    items: [
+      { img:"https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=900&q=80", title:"Product Drop Carousel", tag:"Retail · IG Post" },
+      { img:"https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=900&q=80", title:"Quote Series Post", tag:"Editorial · IG Post" },
+      { img:"https://images.unsplash.com/photo-1611162458324-aae1eb4129a4?w=900&q=80", title:"Launch Day Story", tag:"Tech · IG Story" },
+      { img:"https://images.unsplash.com/photo-1607082349566-187342175e2f?w=900&q=80", title:"Behind the Scenes Post", tag:"Brand · IG Post" },
+      { img:"https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=900&q=80", title:"Event Recap Carousel", tag:"Event · IG Post" },
+      { img:"https://images.unsplash.com/photo-1618556450991-2f1af64e8191?w=900&q=80", title:"Weekly Promo Post", tag:"Retail · IG Post" }
+    ]
+  }
+};
+
+/* ============ SLIDESHOW ENGINE ============ */
+const state = {};
+const AUTO_MS = 1400;
+
+function buildStack(key){
+  const stackEl = document.querySelector(`.stack[data-stack="${key}"]`);
+  const data = DATA[key];
+  stackEl.innerHTML = data.items.map((item, i) => `
+    <div class="stack-card" data-index="${i}" style="z-index:${data.items.length - i}">
+      <img src="${item.img}" alt="${item.title}" loading="lazy">
+      <div class="cap mono">${item.tag}</div>
+    </div>
+  `).join('');
+
+  // progress dots
+  const progEl = document.getElementById(`${key}-progress`);
+  progEl.innerHTML = data.items.map((_, i) => `<div class="seg" data-seg="${i}"><div class="fill"></div></div>`).join('');
+
+  state[key] = { index: 0, timer: null, cards: stackEl.querySelectorAll('.stack-card') };
+
+  // click any card -> open lightbox at that index
+  stackEl.querySelectorAll('.stack-card').forEach(card => {
+    card.addEventListener('click', () => openLightbox(key, parseInt(card.dataset.index)));
+  });
+
+  renderStack(key);
+  startAuto(key);
+}
+
+function renderStack(key){
+  const s = state[key];
+  const data = DATA[key];
+  const n = data.items.length;
+
+  s.cards.forEach((card, i) => {
+    // relative position from current index, wrapped
+    let rel = (i - s.index + n) % n;
+    let relPrev = state[key]._prevIndex !== undefined ? (i - state[key]._prevIndex + n) % n : rel;
+    card.classList.remove('behind2','behind3');
+
+    if(rel === 0){
+      card.style.transform = 'translateY(0) rotate(0deg) scale(1)';
+      card.style.opacity = '1';
+      card.style.zIndex = 10;
+    } else if(rel === 1 || rel === n-1){
+      const dir = rel === 1 ? 1 : -1;
+      card.style.transform = `translateY(10px) rotate(${dir*4}deg) scale(0.97)`;
+      card.style.opacity = '0.85';
+      card.style.zIndex = 8;
+      card.classList.add('behind2');
+    } else if(rel === 2 || rel === n-2){
+      const dir = rel === 2 ? 1 : -1;
+      card.style.transform = `translateY(18px) rotate(${dir*7}deg) scale(0.94)`;
+      card.style.opacity = '0.5';
+      card.style.zIndex = 6;
+      card.classList.add('behind3');
+    } else if(relPrev === 0 && rel === n-1){
+      // this card was just the front card and is now exiting — slide it out to the side
+      card.style.transform = `translateY(-14px) rotate(-10deg) scale(0.92) translateX(-30px)`;
+      card.style.opacity = '0';
+      card.style.zIndex = 9;
+    } else {
+      card.style.transform = 'translateY(22px) rotate(0deg) scale(0.9)';
+      card.style.opacity = '0';
+      card.style.zIndex = 1;
+    }
+  });
+
+  state[key]._prevIndex = s.index;
+
+  document.getElementById(`${key}-title`).textContent = data.items[s.index].title;
+  document.getElementById(`${key}-desc`).textContent = data.desc;
+
+  // progress segments
+  const segs = document.querySelectorAll(`#${key}-progress .seg`);
+  segs.forEach((seg, i) => {
+    seg.classList.remove('done','active');
+    if(i < s.index) seg.classList.add('done');
+    if(i === s.index) seg.classList.add('active');
+  });
+}
+
+function advance(key, dir){
+  const s = state[key];
+  const n = DATA[key].items.length;
+  s.index = (s.index + dir + n) % n;
+  renderStack(key);
+  restartAuto(key);
+}
+
+function startAuto(key){
+  state[key].timer = setInterval(() => advance(key, 1), AUTO_MS);
+}
+function restartAuto(key){
+  clearInterval(state[key].timer);
+  startAuto(key);
+}
+
+Object.keys(DATA).forEach(buildStack);
+
+// manual controls
+document.querySelectorAll('.stack-controls button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    advance(btn.dataset.target, parseInt(btn.dataset.dir));
+  });
+});
+
+// pause on hover
+document.querySelectorAll('.stack').forEach(stackEl => {
+  const key = stackEl.dataset.stack;
+  stackEl.addEventListener('mouseenter', () => clearInterval(state[key].timer));
+  stackEl.addEventListener('mouseleave', () => startAuto(key));
+
+  // swipe support
+  let sx = 0, sy = 0;
+  stackEl.addEventListener('touchstart', (e) => {
+    sx = e.changedTouches[0].clientX;
+    sy = e.changedTouches[0].clientY;
+    clearInterval(state[key].timer);
+  }, { passive:true });
+  stackEl.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - sx;
+    const dy = e.changedTouches[0].clientY - sy;
+    if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){
+      advance(key, dx < 0 ? 1 : -1);
+    } else {
+      startAuto(key);
+    }
+  }, { passive:true });
+});
+
+/* ============ FULL GRID TOGGLE ============ */
+document.querySelectorAll('[data-toggle-grid]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const key = link.dataset.toggleGrid;
+    const grid = document.getElementById(`${key}-grid`);
+    const isOpen = grid.classList.toggle('open');
+    link.textContent = isOpen ? `Hide ${key} ↑` : `View all ${key} →`;
+    if(isOpen && grid.children.length === 0){
+      grid.innerHTML = DATA[key].items.map((item, i) => `
+        <figure data-index="${i}">
+          <img src="${item.img}" alt="${item.title}" loading="lazy">
+        </figure>
+      `).join('');
+      grid.querySelectorAll('figure').forEach(fig => {
+        fig.addEventListener('click', () => openLightbox(key, parseInt(fig.dataset.index)));
+      });
+    }
+    if(isOpen) grid.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  });
+});
+
+/* ============ LIGHTBOX ============ */
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lb-img');
+const lbCap = document.getElementById('lb-cap');
+let lbState = { key:null, index:0 };
+
+function openLightbox(key, index){
+  lbState = { key, index };
+  updateLightbox();
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function updateLightbox(){
+  const item = DATA[lbState.key].items[lbState.index];
+  lbImg.src = item.img;
+  lbImg.alt = item.title;
+  lbCap.textContent = `${item.title} — ${item.tag}`;
+}
+function closeLightbox(){
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function lbNav(dir){
+  const n = DATA[lbState.key].items.length;
+  lbState.index = (lbState.index + dir + n) % n;
+  updateLightbox();
+}
+
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+document.getElementById('lb-prev').addEventListener('click', () => lbNav(-1));
+document.getElementById('lb-next').addEventListener('click', () => lbNav(1));
+lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+
+document.addEventListener('keydown', (e) => {
+  if(!lightbox.classList.contains('open')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowLeft') lbNav(-1);
+  if(e.key === 'ArrowRight') lbNav(1);
+});
+
+// swipe support
+let touchStartX = 0, touchStartY = 0;
+lightbox.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].clientX;
+  touchStartY = e.changedTouches[0].clientY;
+}, { passive:true });
+
+lightbox.addEventListener('touchend', (e) => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)){
+    dx < 0 ? lbNav(1) : lbNav(-1);
+  }
+}, { passive:true });
+
+/* ============ SCROLL REVEAL ============ */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('in');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => io.observe(el));
+
+/* ============ MOBILE NAV ============ */
+const navToggle = document.getElementById('nav-toggle');
+const mobileNav = document.getElementById('mobile-nav');
+const navToggleIcon = document.getElementById('nav-toggle-icon');
+
+function setMobileNav(open){
+  mobileNav.classList.toggle('open', open);
+  navToggle.setAttribute('aria-expanded', String(open));
+  navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  navToggleIcon.innerHTML = open
+    ? '<path d="M18 6L6 18M6 6l12 12"/>'
+    : '<path d="M3 6h18M3 12h18M3 18h18"/>';
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+
+navToggle.addEventListener('click', () => setMobileNav(!mobileNav.classList.contains('open')));
+mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMobileNav(false)));
+
+/* ============ SPOTLIGHT CURSOR ============ */
+const spotlight = document.getElementById('spotlight');
+const ring = document.getElementById('spotlight-ring');
+let rafPending = false, mx = 50, my = 50, px = 0, py = 0;
+
+window.addEventListener('mousemove', (e) => {
+  mx = (e.clientX / window.innerWidth) * 100;
+  my = (e.clientY / window.innerHeight) * 100;
+  px = e.clientX; py = e.clientY;
+  ring.classList.add('active');
+  if(!rafPending){
+    rafPending = true;
+    requestAnimationFrame(() => {
+      spotlight.style.setProperty('--mx', mx + '%');
+      spotlight.style.setProperty('--my', my + '%');
+      ring.style.setProperty('--ringx', px + 'px');
+      ring.style.setProperty('--ringy', py + 'px');
+      rafPending = false;
+    });
+  }
+});
+
+window.addEventListener('mouseleave', () => ring.classList.remove('active'));
+
+// ring grows over interactive elements
+document.querySelectorAll('.stack-card, .full-grid figure, .hero-frame, a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+});
+</script>
+
+</body>
+</html>
